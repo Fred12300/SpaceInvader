@@ -1,0 +1,29 @@
+canvas {
+    border: solid 1px red;
+}
+
+#frame {
+    height: 600px;
+    width: 800px;
+    border: solid blue 1px;
+    
+}
+
+.enemy {
+
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: bisque;
+    top: 0px;
+    left: 100px;
+}
+
+.player {
+    position: relative;
+    height: 40px;
+    width: 40px;
+    background-color: rgb(211, 17, 17);
+    top: 0px;
+    left: 100px;
+}
