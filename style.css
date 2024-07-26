@@ -15,6 +15,8 @@
     width: 800px;
     overflow: hidden;
     background-image: url(./Etoiles.png);
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: multiply;
     background-repeat: repeat;
     background-size: 100%;
     background-position-y: -500px;
@@ -29,6 +31,8 @@
     width: 800px;
     overflow: hidden;
     background-image: url(./Etoiles.png);
+    background-color: rgba(0, 0, 0, 0.3);
+    background-blend-mode: multiply;
     background-repeat: repeat;
     background-size: 300%;
     background-position-y: -500px;
