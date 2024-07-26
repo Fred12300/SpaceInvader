@@ -51,10 +51,10 @@ let eneDropBomb = () => {
         bomb.className = "bomb"
         bomb.style.position = "absolute"
         bomb.style.zIndex ="-1"
-        bomb.style.height = "15px"
-        bomb.style.width = "15px"
-        bomb.style.borderRadius = "50% 50%"
-        bomb.style.background = "radial-gradient(lightblue, green, rgba(255,255,255,0.6))"
+        bomb.style.height = "25px"
+        bomb.style.width = "3px"
+        bomb.style.borderRadius = "10% 10%"
+        bomb.style.background = "radial-gradient(green, lightgreen, rgba(255,255,255,0.6))"
         bomb.style.top = "-60px"
         bomb.style.left = `${horEne + 18}px`
     document.body.appendChild(bomb)
@@ -224,6 +224,8 @@ if(dropIt === 0){
 
     - générateur et compteur de nombre d'ennemis
     - générateur et sélecteur de niveau de difficulté
+    - avancement de la ligne ennemie
+        - changer valeurs fixe en variable: - position départ bombe
     
     - compteur de vies player
     - compteur de points
