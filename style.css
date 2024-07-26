@@ -30,7 +30,7 @@
     overflow: hidden;
     background-image: url(./Etoiles.png);
     background-repeat: repeat;
-    background-size: 400%;
+    background-size: 300%;
     background-position-y: -500px;
 }
 
@@ -40,7 +40,7 @@
     height: 40px;
     top: 0;
     border: 1px solid black;
-    background-color: rgba(0, 0, 0, 0.61);
+    background-color: black;
     z-index: 1;
 }
 
@@ -50,17 +50,19 @@
     width: 100vw;
     height: 10vh;
     border: 1px solid black;
-    background-color: rgba(57, 62, 38, 0.61);
+    background-color: black;
     z-index: 1;
 }
 
 .enemy {
-    z-index: -1;
     position: absolute;
+    z-index: -1;
     height: 40px;
-    width: 40px;
-    background: white;
-    top: 0px;
+    width: 50px;
+    background-image: url(./—Pngtree—alien\ spaceships\ ufo\ with\ blue_6329025.png);
+    background-size: 130%;
+    background-position: center;
+    top: 20px;
     left: 100px;
 }
 
@@ -69,7 +71,7 @@
     height: 40px;
     width: 40px;
     top: 500px;
-    left: 300px;
+    left: 400px;
     transition: all 0.1s ease-in-out;
     display: flex;
     justify-content: center;
@@ -83,3 +85,6 @@
     padding-top: 50px;
     object-fit: scale-down;
 }
+
+
+
