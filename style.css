@@ -90,6 +90,10 @@ h1:hover {
     cursor: pointer;
 }
 
+.close {
+    cursor: pointer;
+}
+
 #frameTop {
   display: flex;
   align-items: center;

@@ -8,22 +8,44 @@ let missDelay = 200
 let missOk = 1
 let score = 0
 let enePosTab = []
-let scoreAff = document.querySelector(".scoreAff")
 let goLeft = false
 let goRight = false
+let stage = 1
 
 
 // Paramètre de jeu------------------------------------------------------------------------------------------
     let gameOn = 0
-    let eneNb = 5
+    let eneNb
     let eneLatSpeed = 130
     let cadanceEneBomb = 2000
     let missRate = 1000
     let scoreInc = 100
     let backSpeed = 30
-    let life = 3
+    let life
 
-    
+    // Contenu des niveaux ---------------------------------------------------------------------------------------------------------------
+    let levelContent = [{
+        stage : 1,
+        eneNb : 3,
+        eneLatSpeed : 130,
+        cadanceEneBomb : 3000
+    },{
+        stage : 2,
+        eneNb : 5,
+        eneLatSpeed : 130,
+        cadanceEneBomb : 2500
+    },{
+        stage : 3,
+        eneNb : 7,
+        eneLatSpeed : 130,
+        cadanceEneBomb : 2000
+    },{
+        stage : 4,
+        eneNb : 8,
+        eneLatSpeed : 130,
+        cadanceEneBomb : 1500
+    }]
+
     // New Menu ---------------------------------------------------------------------------------------------------------------
     let newMenu = document.createElement("div");
         newMenu.id = "menu"
@@ -48,8 +70,8 @@ let goRight = false
     // Choix Menu ------------------------------------------------------------------------------------------
         let menuToggle = document.getElementById("menu")
         let newG = document.querySelector(".new-game")
-        let levelSelect = document.querySelector(".select-level")
-        let highScores = document.querySelector(".highScores")
+        let levelMenu = document.querySelector(".select-level")
+        let highScores = document.querySelector(".high-scores")
         let options = document.querySelector(".options")
     
     
@@ -60,6 +82,7 @@ let goRight = false
     let dropIt = 1
 
     let changeAllParameters = (a) => {
+        console.log("---ChangeAll---")
         eneLineLat = a
         dropIt = a
         gameOn = a
@@ -70,8 +93,62 @@ let goRight = false
 //---------------------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------------------
 
+// Génération et affichage High Scores ------------------------------------------------------------------------------------------
+let highScoresTab = [{
+    score : "1000",
+    name : "Bob"
+},{
+    score : "1200",
+    name : "Paul"
+},{
+    score : "100",
+    name : "George"
+}]
 
-// Animation du fond------------------------------------------------------------------------------------------
+let highScoresAffAll = document.createElement("div")
+    highScoresAffAll.style.position = "absolute"
+    highScoresAffAll.style.height = "400px"
+    highScoresAffAll.style.width = "500px"
+    highScoresAffAll.style.top = "100px"
+    highScoresAffAll.style.left = "150px"
+    highScoresAffAll.style.backgroundColor = "rgba(46, 45, 45, 0.5)"
+    highScoresAffAll.style.color = "red"
+    highScoresAffAll.style.display = "flex"
+    highScoresAffAll.style.alignItems = "center"
+    highScoresAffAll.style.justifyContent = "space-around"
+    highScoresAffAll.style.flexDirection = "column"
+    highScoresAffAll.className = "scoreTab"
+    
+let generateHighScores = () => {
+    backGN.innerHTML = ""
+    backGN.appendChild(highScoresAffAll)
+    let scoreTab = document.querySelector(".scoreTab")
+    for(i=0; i<highScoresTab.length; i++){
+        let highScoreAff = document.createElement("p")
+        highScoreAff.style.position = "relative"
+        highScoreAff.style.color = "red"
+        highScoreAff.className =`n${i}`
+        highScoreAff.innerText = `${highScoresTab[i].score} : ${highScoresTab[i].name}`
+        scoreTab.appendChild(highScoreAff)
+        console.log(highScoresTab[i].score)
+    }
+    let close = document.createElement("p")
+        close.innerText = "fermer"
+        close.style.color = "red"
+        close.className = "close"
+    backGN.appendChild(close)
+    let closeIt = document.querySelector(".close")
+    closeIt.addEventListener("click", () => {
+        scoreTab.remove()
+        backGN.innerHTML = ""
+        generateMenu()
+    })
+}
+
+
+
+
+// Animation du fond ------------------------------------------------------------------------------------------
 let backFond = () => {
     backNV++
     backGNV.style = `background-position-y: ${backNV}px`
@@ -103,11 +180,47 @@ let generateLifes = () => {
     }
 }
 
+// Affichage stage ---------------------------------------------------------------------------------------------------------------
+let stageAffEle = document.createElement("div")
+stageAffEle.style.position = "absolute"
+stageAffEle.innerText = `stage ${stage}`
+stageAffEle.style.height = "400px"
+stageAffEle.style.width = "700px"
+stageAffEle.style.color = "red"
+stageAffEle.style.fontSize = "100px"
+stageAffEle.style.opacity = "0%"
+stageAffEle.style.transition = "all 1.5s"
+stageAffEle.style.top = "100px"
+stageAffEle.style.left = "100px"
 
+let stageAff = () => {
+stageAffEle.innerText = `stage ${stage}`
+backGN.innerHTML = ""
+backGN.appendChild(stageAffEle)
+setTimeout(() => {
+    stageAffEle.style.opacity = "100%"
+}, 10);
+
+setTimeout(() => {
+    stageAffEle.style.opacity = "0%"
+}, 1500);
+
+setTimeout(() => {
+backGN.innerHTML = ""
+generateEnnemis()
+respawn()
+}, 3000)
+}
 
 // LevelCleared------------------------------------------------------------------------------------------
 let levelCleared = () => {
-    console.log("Level CLeared")
+    console.log("---Level CLeared---")
+    stage++
+    if(stage <= levelContent.length){
+        stageAff()
+    } else {
+        console.log("---This is the End !---")
+    }
 }
 
 //GameOver------------------------------------------------------------------------------------------
@@ -151,7 +264,21 @@ let respawn = () => {
 playerPos = document.querySelector(".player")
 let player = document.querySelector(".player")
 
-
+// Affichage score et vies------------------------------------------------------------------------------------------
+let generateTop = () => {
+    let scoreName = document.createElement("p")
+        scoreName.className = "top"
+        scoreName.textContent = "score :"
+    let scoreVal = document.createElement("div")
+        scoreVal.classList = "top scoreAff"
+        scoreVal.textContent = "0"
+    let lifesZone = document.createElement("div")
+        lifesZone.className = "lifes"
+    frameTop.appendChild(scoreName)
+    frameTop.appendChild(scoreVal)
+    frameTop.appendChild(lifesZone)
+}
+let scoreAff = document.querySelector(".scoreAff")
 
 // Génération d'ennemis------------------------------------------------------------------------------------------
 let eneLine = document.createElement("div")
@@ -167,6 +294,7 @@ document.body.appendChild(eneLine)
 
 let generateEnnemis = () => {
     let eneLineInPos = 0
+    eneNb = levelContent[stage - 1]["eneNb"]
     for(let i=1; i<eneNb + 1; i++){
         enePosTab.push(i)
         let eneSaucer = document.createElement("div")
@@ -238,12 +366,10 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
                     player.remove()
                     life -= 1
                     if(life<=0){
-                        console.log("WHAT !?")
                         gameOver()
                     }else{
                         setTimeout(respawn, 1000)
                     }
-                    console.log(life)
                     let noLife = document.querySelector(`.n${life}`)
                     noLife.remove()
                     bomb.remove()
@@ -264,12 +390,14 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
             eneLine.style.left = `${lineLeft}px`
             if(lineLeft<=0){moving = 5}
             if(lineLeft>=190){moving = -5}
+            /* let eneLinePos = eneLine.style.top.substring(0,eneLine.style.top.length-2)
+            eneLinePos++
+            console.log(eneLinePos)
+            eneLine.style.top = `${eneLinePos}px` */
         }
 
     let movingEnemys = setInterval((moveEnemys),eneLatSpeed)
     if(eneLineLat===0){clearInterval(movingEnemys)}
-
-
 
     // Action des touches du clavier------------------------------------------------------------------------------------------
     let keyPress = (e) => {
@@ -337,6 +465,7 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
                                     missile.remove()
                                     clearInterval(missLaunchInt)
                                     score += scoreInc
+                                    scoreAff = document.querySelector(".scoreAff")
                                     scoreAff.textContent = `${score}`
                                 }
                             }
@@ -390,21 +519,6 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
 
     /* if(gameOn===0){clearInterval(interMove)} */
 
-// Affichage score et vies------------------------------------------------------------------------------------------
-let generateTop = () => {
-    let scoreName = document.createElement("p")
-        scoreName.className = "top"
-        scoreName.textContent = "score :"
-    let scoreVal = document.createElement("div")
-        scoreVal.classList = "top scoreAff"
-        scoreVal.textContent = "0"
-    let lifesZone = document.createElement("div")
-        lifesZone.className = "lifes"
-    frameTop.appendChild(scoreName)
-    frameTop.appendChild(scoreVal)
-    frameTop.appendChild(lifesZone)
-}
-
 // RAZ bombes ennemies------------------------------------------------------------------------------------------
 if(dropIt === 0){
     clearInterval(candanceBomb) 
@@ -415,34 +529,38 @@ let newGame = () => {
     console.log("---NewGame---")
     menuToggle.remove()
     gameOn = 1
-    generateTop()
-    generateEnnemis()
-    generateLifes()
+    life = 4
+    stage = 1
     changeAllParameters(1)
-    respawn()
+    scoreAff = document.querySelector(".scoreAff")
+    generateTop()
+    stageAff()    
+    generateLifes()
 }
 
 
 newG.addEventListener("click", newGame)
+    highScores.addEventListener("click", generateHighScores)
 
 
+console.log(motion)
 
 
 //ToDo------------------------------------------------------------------------------------------
 /*
-    - générateur et compteur de nombre d'ennemis
-    - générateur et sélecteur de niveau de difficulté
     - avancement de la ligne ennemie
         - changer valeurs fixe en variable: - position départ bombe
     
     - affichage du score en fin de partie
+        - ! multiplication des entrées
 
     - interface navigation
-        - nouvelle partie
-            - création de nouvelle partie
+        
         - sélectionner niveau
-        - high scores
+
         - about
 
-    -Réguler génération alétoir de position de tir ennemi
+    - ! Réguler génération alétoir de position de tir ennemi
+
+    - créer Boss et fin
 */
