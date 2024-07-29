@@ -5,13 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Space Invader</title>
     <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="frameTop"></div>
+    <div id="frameTop">
+        <p class="top">SCORE : </p>
+        <div class="top scoreAff">0</div>
+        <div class="lifes"></div>
+    </div>
     <div id="frameNV">
         <div id="frameN">
-            <div class="player"><img src="./pngegg.png" alt=""></div>
-        </div>
+<!--             <div class="player"><img src="./pngegg.png" alt=""></div>
+ -->        </div>
     </div>
     <div id="frameBottom"></div>
     <script src="./script.js"></script>

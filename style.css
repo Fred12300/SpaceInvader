@@ -1,94 +1,118 @@
 * {
-    margin: 0;
-    box-sizing: border-box;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: "Rubik Mono One", monospace;
 }
- body {
-    background-color: black;
- }
+body {
+  background-color: black;
+  overflow-y: hidden;
+}
+
+.top {
+  color: red;
+  text-align: right;
+  margin-left: 50px;
+}
+
+.scoreAff {
+    width: 80px;
+}
 
 #frameNV {
-    z-index: -2;
-    position: absolute;
-    border: solid red 1px;
-    top: 40px;
-    height: 600px;
-    width: 800px;
-    overflow: hidden;
-    background-image: url(./Etoiles.png);
-    background-color: rgba(0, 0, 0, 0.5);
-    background-blend-mode: multiply;
-    background-repeat: repeat;
-    background-size: 100%;
-    background-position-y: -500px;
+  z-index: -2;
+  position: absolute;
+  border: solid red 1px;
+  top: 40px;
+  height: 600px;
+  width: 800px;
+  overflow: hidden;
+  background-image: url(./Etoiles.png);
+/*   background-color: rgba(0, 0, 0, 0.5);*/
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  background-size: 100%;
+  background-position-y: -500px;
 }
 
 #frameN {
-    z-index: -2; 
-    position: absolute;
-    border: solid red 1px;
-    top: 0px;
-    height: 600px;
-    width: 800px;
-    overflow: hidden;
-    background-image: url(./Etoiles.png);
-    background-color: rgba(0, 0, 0, 0.3);
-    background-blend-mode: multiply;
-    background-repeat: repeat;
-    background-size: 300%;
-    background-position-y: -500px;
+  z-index: -2;
+  position: absolute;
+  border: solid red 1px;
+  top: 0px;
+  height: 600px;
+  width: 800px;
+  overflow: hidden;
+  background-image: url(./Etoiles.png);
+/*   background-color: rgba(0, 0, 0, 0.3);*/
+  background-blend-mode: multiply;
+  background-repeat: repeat;
+  background-size: 300%;
+  background-position-y: -500px;
 }
 
 #frameTop {
-    position: absolute ;
-    width: 100%;
-    height: 40px;
-    top: 0;
-    border: 1px solid black;
-    background-color: black;
-    z-index: 1;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 40px;
+  top: 0;
+  border: 1px solid black;
+  background-color: black;
+  z-index: 1;
 }
 
 #frameBottom {
-    position: absolute;
-    top: 640px;
-    width: 100vw;
-    height: 10vh;
-    border: 1px solid black;
-    background-color: black;
-    z-index: 1;
+  position: absolute;
+  top: 640px;
+  width: 100vw;
+  height: 10vh;
+  border: 1px solid black;
+  background-color: black;
+  z-index: 1;
 }
 
 .enemy {
-    position: absolute;
-    z-index: -1;
-    height: 40px;
-    width: 50px;
-    background-image: url(./—Pngtree—alien\ spaceships\ ufo\ with\ blue_6329025.png);
-    background-size: 130%;
-    background-position: center;
-    top: 20px;
-    left: 100px;
+  position: absolute;
+  z-index: -1;
+  height: 40px;
+  width: 50px;
+  background-image: url(./—Pngtree—alien\ spaceships\ ufo\ with\ blue_6329025.png);
+  background-size: 130%;
+  background-position: center;
+  top: 20px;
+  left: 100px;
 }
 
 .player {
-    position: relative;
-    height: 40px;
-    width: 40px;
-    top: 500px;
-    left: 400px;
-    transition: all 0.1s ease-in-out;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-/*     border: solid 1px white; */
+  position: relative;
+  height: 40px;
+  width: 40px;
+  top: 500px;
+  left: 400px;
+  transition: all 0.1s ease-in-out;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*     border: solid 1px white; */
 }
 
 .player img {
-    scale: 20% ;
-    z-index: 2;
-    padding-top: 50px;
-    object-fit: scale-down;
+  scale: 20%;
+  z-index: 2;
+  padding-top: 50px;
+  object-fit: scale-down;
 }
 
+.lifes {
+  display: flex;
+  justify-content: space-between;
+  margin-left: 150px;
+}
 
-
+.vies {
+  margin: 0 10px;
+  background-image: url(./pngegg.png);
+  background-size: cover;
+  back
+}
