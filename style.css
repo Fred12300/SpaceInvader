@@ -35,6 +35,7 @@ body {
   background-repeat: repeat;
   background-size: 100%;
   background-position-y: -500px;
+
 }
 
 #frameN {
@@ -50,6 +51,7 @@ body {
   background-repeat: repeat;
   background-size: 300%;
   background-position-y: -500px;
+
 }
 
 h1 {
@@ -135,11 +137,9 @@ h1:hover {
   width: 40px;
   top: 500px;
   left: 400px;
-  transition: all 0.1s ease-in-out;
   display: flex;
   justify-content: center;
   align-items: center;
-  /*     border: solid 1px white; */
 }
 
 .player img {

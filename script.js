@@ -1,8 +1,8 @@
-let backGNV = document.querySelector("#frameNV")
+let backFond = document.querySelector("#frameNV")
 let backGN = document.querySelector("#frameN")
 let frameTop = document.querySelector("#frameTop")
-let backNV = -500
-let backN = -500
+let backFondPos = -500
+let backGNPos = -500
 let horPlayer = 400
 let missDelay = 200
 let missOk = 1
@@ -22,6 +22,7 @@ let stage = 1
     let scoreInc = 100
     let backSpeed = 30
     let life
+    let bPosSpeed = 3
 
     // Contenu des niveaux ---------------------------------------------------------------------------------------------------------------
     let levelContent = [{
@@ -83,9 +84,11 @@ let stage = 1
 
     let changeAllParameters = (a) => {
         console.log("---ChangeAll---")
-        eneLineLat = a
-        dropIt = a
-        gameOn = a
+        interFond = setInterval((backFondMove),backSpeed+30)
+        interFront = setInterval((backFrontMove),backSpeed)
+        interMove = setInterval((movePlayer))
+        candanceBomb = setInterval((eneDropBomb), cadanceEneBomb);
+        movingEnemys = setInterval((moveEnemys),eneLatSpeed)
     }
         // Activer les mouvements du jeu------------------------------------------------------------------------------------------
             //changeAllParameters(1)
@@ -149,22 +152,16 @@ let generateHighScores = () => {
 
 
 // Animation du fond ------------------------------------------------------------------------------------------
-let backFond = () => {
-    backNV++
-    backGNV.style = `background-position-y: ${backNV}px`
+let backFondMove = () => {
+    backFondPos++
+    backFond.style = `background-position-y: ${backFondPos}px`
 }
-let backFront = () => {
-    backN++
-    backGN.style = `background-position-y: ${backN}px`
+let backFrontMove = () => {
+    backGNPos++
+    backGN.style = `background-position-y: ${backGNPos}px`
 }
-let interFond = setInterval((backFond),backSpeed+30)
-let interFront = setInterval((backFront),backSpeed)
-
-// RAZ animation fond------------------------------------------------------------------------------------------
-if(motion === 0){
-    clearInterval(interFond)
-    clearInterval(interFront)
-}
+let interFond = setInterval((backFondMove),backSpeed+30)
+let interFront = setInterval((backFrontMove),backSpeed)
 
 //Génération affichage vies------------------------------------------------------------------------------------------
 let zoneVie = document.querySelector(".lifes")
@@ -215,6 +212,8 @@ respawn()
 // LevelCleared------------------------------------------------------------------------------------------
 let levelCleared = () => {
     console.log("---Level CLeared---")
+    let projs = document.querySelectorAll(".projectile")
+    projs.forEach(x => x.remove())
     stage++
     if(stage <= levelContent.length){
         stageAff()
@@ -232,6 +231,8 @@ let gOverDisp = document.createElement("div")
 
 let gameOver = () => {
     console.log("---GAMEOVER---")
+    projs = document.querySelectorAll(".projectile")
+    projs.forEach(x => x.remove())
     eneLine.innerHTML = ""
     backGN.innerHTML = ""
     frameTop.innerHTML = ""
@@ -251,6 +252,8 @@ let gameOver = () => {
 
 //Respawn------------------------------------------------------------------------------------------
 let respawn = () => {
+    projs = document.querySelectorAll(".projectile")
+    projs.forEach(x => x.remove())
     let playerNav = document.createElement("div")
     playerNav.className = "player"
     let playerImg =document.createElement("img")
@@ -305,9 +308,26 @@ let generateEnnemis = () => {
     }
 }
 
-
+let eneLinePos = eneLine.style.top.substring(0,eneLine.style.top.length-2)
 let enemys = document.querySelectorAll(".enemy")
 let lineLeft = document.querySelector(".line").getBoundingClientRect().x
+
+    //déplacement de la ligne d'enemis------------------------------------------------------------------------------------------
+    let moving = -5
+    let moveEnemys = () => {
+            lineLeft += moving
+            eneLine.style.left = `${lineLeft}px`
+            if(lineLeft<=0){moving = 5}
+            if(lineLeft>=190){moving = -5}
+            eneLinePos = eneLine.style.top.substring(0,eneLine.style.top.length-2)
+            eneLinePos++
+            eneLine.style.top = `${eneLinePos}px`
+        }
+
+    let movingEnemys = setInterval((moveEnemys),eneLatSpeed)
+    if(eneLineLat===0){clearInterval(movingEnemys)}
+
+
 
     //Ennemi largue une bombe------------------------------------------------------------------------------------------
     let eneDropBomb = () => {
@@ -317,22 +337,26 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
         let eneTir = document.getElementsByClassName(`${arrPos}`)
         let horEne = eneTir[0].getBoundingClientRect().x
         let bomb = document.createElement("div");
-            bomb.className = "bomb"
+            bomb.className = "bomb projectile"
             bomb.style.position = "absolute"
             bomb.style.zIndex ="-1"
             bomb.style.height = "25px"
             bomb.style.width = "25px"
             bomb.style.borderRadius = "50% 50%"
             bomb.style.background = "radial-gradient(rgb(125, 255, 151), rgb(51, 255, 249), rgba(251, 255, 249, 0.1))"
-            bomb.style.top = "-60px"
+
+            eneLinePos = eneLine.style.top.substring(0,eneLine.style.top.length-2)
+            bomb.style.top = `${eneLinePos + 80}px`
+
             bomb.style.left = `${horEne + 10}px`
         document.body.appendChild(bomb)
-        let bPos = 100
-        let bPosMin = 650
-        let bPosSpeed = -1
+        console.log(eneLinePos)
+        let bPos = Number(eneLinePos) + 30
+        let bPosMin = 680
+        
 
         let dropBomb = () => {
-            bPos = bPos - bPosSpeed
+            bPos -=  - bPosSpeed
                 if(bPos>bPosMin){
                     bomb.remove()
                     clearInterval(bombLaunchInt)
@@ -382,23 +406,6 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
     let candanceBomb = setInterval((eneDropBomb), cadanceEneBomb);
 
 
-
-    //déplacement de la ligne d'enemis------------------------------------------------------------------------------------------
-    let moving = -5
-    let moveEnemys = () => {
-            lineLeft += moving
-            eneLine.style.left = `${lineLeft}px`
-            if(lineLeft<=0){moving = 5}
-            if(lineLeft>=190){moving = -5}
-            /* let eneLinePos = eneLine.style.top.substring(0,eneLine.style.top.length-2)
-            eneLinePos++
-            console.log(eneLinePos)
-            eneLine.style.top = `${eneLinePos}px` */
-        }
-
-    let movingEnemys = setInterval((moveEnemys),eneLatSpeed)
-    if(eneLineLat===0){clearInterval(movingEnemys)}
-
     // Action des touches du clavier------------------------------------------------------------------------------------------
     let keyPress = (e) => {
         switch(e.code) {
@@ -406,7 +413,7 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
             // Lancer un missile------------------------------------------------------------------------------------------
             case "Space" :
                 let missile = document.createElement("div")
-                    missile.className = "missileAmi"
+                    missile.classList = "missileAmi projectile"
                     missile.style.position = "absolute"
                     missile.style.zIndex ="-1"
                     missile.style.height = "50px"
@@ -425,9 +432,9 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
                     
                 let vPos = 500
                 let vPosMin = 0
-                let vPosSpeed = 1
+                let vPosSpeed = 10
                 let launchMiss = () => {
-                    vPos = vPos - vPosSpeed
+                    vPos -= vPosSpeed
                         if(vPos<vPosMin){
                             missile.remove()
                             clearInterval(missLaunchInt)
@@ -501,23 +508,24 @@ let lineLeft = document.querySelector(".line").getBoundingClientRect().x
     document.addEventListener("keydown", keyPress)
     document.addEventListener("keyup", keyRelease)
 
-
-    let interMove = setInterval(() => {
+    let movePlayer = () => {
         if(goLeft === true){
             if(horPlayer>0){
-                horPlayer -= 20;}
+                horPlayer -= 5;}
                 playerPos = document.querySelector(".player")
                 playerPos.style.left = `${horPlayer}px`
         }
         if(goRight === true){
             if(horPlayer<750){
-                horPlayer += 20;}
+                horPlayer += 5;}
                 playerPos = document.querySelector(".player")
                 playerPos.style.left = `${horPlayer}px`
         }
-    }, 50)
+    }
 
-    /* if(gameOn===0){clearInterval(interMove)} */
+    let interMove = setInterval((movePlayer))
+
+
 
 // RAZ bombes ennemies------------------------------------------------------------------------------------------
 if(dropIt === 0){
@@ -529,8 +537,10 @@ let newGame = () => {
     console.log("---NewGame---")
     menuToggle.remove()
     gameOn = 1
-    life = 4
+    motion = 1
+    life = 1
     stage = 1
+    dropIt = 1
     changeAllParameters(1)
     scoreAff = document.querySelector(".scoreAff")
     generateTop()
@@ -540,11 +550,19 @@ let newGame = () => {
 
 
 newG.addEventListener("click", newGame)
-    highScores.addEventListener("click", generateHighScores)
+highScores.addEventListener("click", generateHighScores)
 
 
-console.log(motion)
-
+// RAZ animation fond------------------------------------------------------------------------------------------
+if(motion === 0){
+    clearInterval(interFond)
+    clearInterval(interFront)
+} 
+if(gameOn===0){
+    clearInterval(interMove)
+    clearInterval(candanceBomb)
+    clearInterval(movingEnemys)
+}
 
 //ToDo------------------------------------------------------------------------------------------
 /*
@@ -559,6 +577,7 @@ console.log(motion)
         - sélectionner niveau
 
         - about
+    - ! empecher le tir si player inexistant
 
     - ! Réguler génération alétoir de position de tir ennemi
 
